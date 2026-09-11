@@ -297,6 +297,7 @@ function normalizeApt({ item, danji }) {
   return compact({
     id: `a${item.itemId}`,
     no: item.itemId,
+    source: '직방',
     kind: APT,
     trade,
     price: trade === '매매' ? deposit : null,
@@ -372,6 +373,7 @@ function normalize(raw) {
     // 아파트 매물 번호와 겹칠 수 있어 종류를 앞에 붙여 둔다. no 는 링크·사진용 원번호.
     id: `r${raw.item_id}`,
     no: raw.item_id,
+    source: '직방',
     kind,
     trade,                                     // 전세 · 월세 · 매매
     price: trade === '매매' ? deposit : null,  // 매매가 (만원)

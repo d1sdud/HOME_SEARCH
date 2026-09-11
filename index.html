@@ -169,6 +169,14 @@ input[type=range]{width:100%;accent-color:var(--accent);height:16px;margin:0}
 .item:hover .istar,.istar.on{opacity:1}
 .istar:hover{background:#f0efeb}
 .istar.on{color:var(--gold)}
+.iout{
+  position:absolute;right:9px;bottom:10px;font-size:11px;color:var(--muted);
+  text-decoration:none;padding:2px 6px;border-radius:4px;border:1px solid transparent;
+  opacity:0;transition:.12s;white-space:nowrap;
+}
+.item:hover .iout{opacity:1}
+.iout:hover{color:var(--accent-ink);background:var(--accent-soft);border-color:#bcd4cc}
+@media (hover:none){.iout{opacity:1}}
 .more{width:100%;padding:13px;font-size:12.5px;color:var(--accent);background:#fff}
 .more:hover{background:#f6f5f2}
 .empty{padding:44px 24px;text-align:center;color:var(--muted);font-size:12.5px;line-height:1.7}
@@ -214,7 +222,15 @@ body.detail-open .mapbtns{right:355px}
 .dhead .x{margin-left:auto;width:26px;height:26px;border-radius:5px;display:grid;place-items:center;color:var(--muted);font-size:16px}
 .dhead .x:hover{background:#f0efeb}
 .dbody{flex:1;overflow-y:auto;padding:14px}
-.dphoto{width:100%;aspect-ratio:4/3;border-radius:var(--r);background:#f0efeb center/cover no-repeat;border:1px solid var(--line-2)}
+.dphoto{
+  display:block;position:relative;width:100%;aspect-ratio:4/3;border-radius:var(--r);
+  background:#f0efeb center/cover no-repeat;border:1px solid var(--line-2);text-decoration:none;
+}
+.dphoto-tag{
+  position:absolute;right:8px;bottom:8px;background:rgba(23,25,28,.72);color:#fff;
+  font-size:11px;padding:3px 8px;border-radius:100px;
+}
+.dphoto:hover .dphoto-tag{background:var(--accent)}
 .dprice{font-size:21px;font-weight:600;letter-spacing:-.02em;margin:13px 0 2px}
 .dsub{font-size:12.5px;color:var(--muted)}
 .dtable{width:100%;border-collapse:collapse;margin-top:14px;font-size:12.5px}
@@ -443,6 +459,8 @@ const ALL = DATA?.items ?? [];
 const URL_SEG = DATA?.urlTemplate ?? { 원룸: 'oneroom', 빌라: 'villa', 오피스텔: 'officetel' };
 
 // 아파트는 직방 안에서도 주소 체계가 다르다.
+const sourceOf = (it) => it.source ?? DATA?.source ?? '직방';
+
 const itemUrl = (it) => (it.kind === '아파트'
   ? `https://www.zigbang.com/home/apt/item/${it.no}`
   : `https://www.zigbang.com/home/${URL_SEG[it.kind] ?? 'villa'}/items/${it.no}`);
@@ -740,7 +758,16 @@ function itemNode(it) {
   const star = el('button', `istar${store.fav[it.id] ? ' on' : ''}`, store.fav[it.id] ? '★' : '☆');
   star.title = '찜';
   star.addEventListener('click', (e) => { e.stopPropagation(); toggleFav(it.id); });
-  node.append(star);
+
+  // 목록에서 바로 원문으로. 상세를 열지 않아도 한 번에 넘어간다.
+  const out = el('a', 'iout', `${sourceOf(it)} ↗`);
+  out.href = itemUrl(it);
+  out.target = '_blank';
+  out.rel = 'noopener';
+  out.title = `${sourceOf(it)} 원문 보기`;
+  out.addEventListener('click', (e) => e.stopPropagation());
+
+  node.append(star, out);
 
   node.addEventListener('click', () => select(it.id, true));
   return node;
@@ -979,8 +1006,13 @@ function renderDetail() {
   panel.append(head);
 
   const body = el('div', 'dbody');
-  const photo = el('div', 'dphoto');
+  const photo = el('a', 'dphoto');
   photo.style.backgroundImage = `url("${itemPhoto(it, 640, 480)}")`;
+  photo.href = itemUrl(it);
+  photo.target = '_blank';
+  photo.rel = 'noopener';
+  photo.title = `${sourceOf(it)} 원문 보기`;
+  photo.append(el('span', 'dphoto-tag', `${sourceOf(it)} 원문 ↗`));
   body.append(photo);
 
   body.append(el('div', 'dprice', `${it.trade} ${priceText(it)}`));
@@ -1000,6 +1032,7 @@ function renderDetail() {
     ['관리비', it.manageCost == null ? '정보 없음' : it.manageCost ? `월 ${(it.manageCost / 10000).toLocaleString()}만` : '없음'],
     ['주소', it.address],
     ['등록일', it.regDate ?? '-'],
+    ['출처', sourceOf(it)],
   ];
   if (it.dupes > 1) rows.push(['중복 등록', `같은 조건으로 ${it.dupes}건 올라와 있다`]);
   if (F.anchor) rows.push(['기준 위치에서', `${distanceKm(F.anchor, it).toFixed(1)}km`]);
@@ -1055,7 +1088,7 @@ function renderDetail() {
     recompute();
     renderDetail();
   });
-  const open = el('a', 'btn primary', '직방에서 보기');
+  const open = el('a', 'btn primary', `${sourceOf(it)}에서 보기`);
   open.href = itemUrl(it);
   open.target = '_blank';
   open.rel = 'noopener';
