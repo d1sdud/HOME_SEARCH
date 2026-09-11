@@ -1,0 +1,28 @@
+{
+  "regions": [
+    "수원",
+    "서울"
+  ],
+  "kinds": [
+    "아파트",
+    "빌라",
+    "오피스텔",
+    "원룸"
+  ],
+  "trades": {
+    "전세": {
+      "depositMax": 50000
+    },
+    "월세": {
+      "depositMax": 20000,
+      "rentMax": 150
+    },
+    "매매": {
+      "priceMax": 100000
+    }
+  },
+  "areaMinM2": 33,
+  "areaMaxM2": null,
+  "geohashPrecision": 4,
+  "maxItems": 6000
+}
