@@ -877,7 +877,7 @@ function initMap() {
     style: 'https://tiles.openfreemap.org/styles/positron',
     center,
     zoom: 10.5,
-    attributionControl: { compact: true, customAttribution: '매물 &copy; 직방' },
+    attributionControl: { compact: true, customAttribution: `매물 &copy; ${(DATA?.sources ?? ['직방']).join(', ')}` },
   });
   map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'bottom-left');
   map.addControl(new maplibregl.GeolocateControl({ trackUserLocation: false }), 'bottom-left');
