@@ -1,4 +1,9 @@
 {
+  "sources": [
+    "직방",
+    "다방",
+    "네이버"
+  ],
   "regions": [
     "수원",
     "서울"
@@ -24,5 +29,14 @@
   "areaMinM2": 33,
   "areaMaxM2": null,
   "geohashPrecision": 4,
-  "maxItems": 6000
+  "maxItems": 20000,
+  "realPriceCount": 6,
+  "dabang": {
+    "maxPages": 60
+  },
+  "naver": {
+    "maxDongs": 400,
+    "maxPages": 40,
+    "pauseMs": 700
+  }
 }
