@@ -1,6 +1,6 @@
 ## 집 찾기
 
-**→ https://d1sdud.github.io/home-search/**
+**→ https://d1sdud.github.io/HOME_SEARCH/**
 
 매물을 한 화면에 모아 놓고 지도로 보고, 조건을 넣으면 순서를 매겨 주는 도구.
 여러 앱을 오가며 메모하지 않아도 되게 만든 것이다.
@@ -59,7 +59,7 @@
 ### 매물 새로 받기
 
 ```bash
-cd home-search
+cd HOME_SEARCH
 node collect.mjs              # 설정한 출처 전부
 node collect.mjs --only 직방,다방    # 네이버 빼고 (Node 만 있으면 된다)
 ```
@@ -148,7 +148,7 @@ node collect.mjs --bbox 37.49,127.02,37.53,127.07   # 남,서,북,동 좌표로 
 
 ### 링크
 
-**https://d1sdud.github.io/home-search/** — 이 저장소가 GitHub Pages 로 그대로 열린다.
+**https://d1sdud.github.io/HOME_SEARCH/** — 이 저장소가 GitHub Pages 로 그대로 열린다.
 매물을 새로 받아 커밋해 올리면 링크는 그대로 둔 채 내용만 갱신된다.
 
 지도는 OpenFreeMap 을 쓴다. 열쇠(API 키)가 필요 없다.
